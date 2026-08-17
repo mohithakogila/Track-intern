@@ -1,0 +1,1056 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Currency Converter</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.converter {
+  width: 380px;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,.25);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  margin: 12px 0 6px;
+  color: #555;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #667eea;
+}
+
+button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 10px;
+  background: #667eea;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #5568d8;
+}
+
+#result {
+  margin-top: 22px;
+  padding: 15px;
+  text-align: center;
+  background: #f3f4ff;
+  border-radius: 10px;
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#rate {
+  margin-top: 8px;
+  text-align: center;
+  color: #777;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="converter">
+  <h1>💱 Currency Converter</h1>
+
+  <label>Amount</label>
+  <input type="number" id="amount" value="1" min="0">
+
+  <label>From</label>
+  <select id="from">
+    <option value="USD">🇺🇸 USD - US Dollar</option>
+    <option value="INR">🇮🇳 INR - Indian Rupee</option>
+    <option value="EUR">🇪🇺 EUR - Euro</option>
+    <option value="GBP">🇬🇧 GBP - British Pound</option>
+    <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
+    <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
+    <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
+  </select>
+
+  <label>To</label>
+  <select id="to">
+    <option value="INR">🇮🇳 INR - Indian Rupee</option>
+    <option value="USD">🇺🇸 USD - US Dollar</option>
+    <option value="EUR">🇪🇺 EUR - Euro</option>
+    <option value="GBP">🇬🇧 GBP - British Pound</option>
+    <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
+    <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
+    <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
+  </select>
+
+  <button onclick="convertCurrency()">Convert</button>
+
+  <div id="result">Enter an amount and click Convert</div>
+  <div id="rate"></div>
+</div>
+
+<script>
+async function convertCurrency() {
+  const amount = Number(document.getElementById("amount").value);
+  const from = document.getElementById("from").value;
+  const to = document.getElementById("to").value;
+
+  if (amount <= 0) {
+    document.getElementById("result").innerText =
+      "Please enter a valid amount.";
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.frankfurter.app/latest?amount=${amount}&from=${from}&to=${to}`
+    );
+
+    const data = await response.json();
+    const converted = data.rates[to];
+
+    document.getElementById("result").innerText =
+      `${amount} ${from} = ${converted.toFixed(2)} ${to}`;
+
+    document.getElementById("rate").innerText =
+      `Live exchange rate • Updated: ${data.date}`;
+
+  } catch (error) {
+    document.getElementById("result").innerText =
+      "Unable to fetch exchange rate.";
+  }
+}
+</script>
+
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>InternApply - Online Internship Application</title>
+
+<style>
+
+/* =========================
+   RESET
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6fb;
+    color: #1f2937;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: white;
+    padding: 20px 6%;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin-left: 25px;
+    font-size: 14px;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: white;
+    padding: 60px 6%;
+}
+
+.hero-content {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 18px;
+    max-width: 650px;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 35px auto;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 25px;
+}
+
+
+/* =========================
+   CARDS
+========================= */
+
+.card {
+    background: white;
+    padding: 28px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+}
+
+.card h2 {
+    margin-bottom: 20px;
+}
+
+
+/* =========================
+   INTERNSHIP DETAILS
+========================= */
+
+.company {
+    color: #4f46e5;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.role {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.details {
+    line-height: 2;
+    color: #4b5563;
+}
+
+.description {
+    margin-top: 20px;
+    line-height: 1.7;
+}
+
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.skill {
+    background: #eef2ff;
+    color: #4338ca;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #4f46e5;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.apply-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.apply-btn:hover {
+    background: #3730a3;
+}
+
+
+/* =========================
+   CHECKBOX
+========================= */
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.checkbox input {
+    width: auto;
+}
+
+
+/* =========================
+   SUCCESS MESSAGE
+========================= */
+
+.success {
+    display: none;
+    background: #dcfce7;
+    color: #166534;
+    padding: 18px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    background: #111827;
+    color: white;
+    text-align: center;
+    padding: 25px;
+    margin-top: 50px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width: 800px) {
+
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .navbar a {
+        display: none;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+<div class="navbar">
+
+<div class="logo">
+    💼 InternApply
+</div>
+
+<div>
+    <a href="#details">Internship</a>
+    <a href="#apply">Apply Now</a>
+</div>
+
+</div>
+
+</header>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+<div class="hero-content">
+
+<h1>
+Apply for Your Dream Internship 🚀
+</h1>
+
+<p>
+Start your career with valuable industry experience.
+Complete the application form below and submit your internship application online.
+</p>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     MAIN CONTENT
+========================= -->
+
+<div class="container">
+
+<div class="layout">
+
+
+<!-- =========================
+     INTERNSHIP DETAILS
+========================= -->
+
+<div class="card" id="details">
+
+<div class="company">
+TechNova Solutions
+</div>
+
+<div class="role">
+Web Development Intern
+</div>
+
+<div class="details">
+
+📍 <strong>Location:</strong> Hyderabad / Remote
+<br>
+
+💰 <strong>Stipend:</strong> ₹20,000 / month
+<br>
+
+⏳ <strong>Duration:</strong> 3 - 6 Months
+<br>
+
+📅 <strong>Deadline:</strong> 30 September 2026
+<br>
+
+🕐 <strong>Type:</strong> Full-time Internship
+
+</div>
+
+
+<div class="description">
+
+<h3>About the Internship</h3>
+
+<p>
+We are looking for enthusiastic students who want to gain
+real-world experience in web development. You will work with
+developers and designers to create modern and responsive web
+applications.
+</p>
+
+</div>
+
+
+<div class="description">
+
+<h3>Responsibilities</h3>
+
+<p>
+• Develop responsive web pages<br>
+• Work with HTML, CSS and JavaScript<br>
+• Fix bugs and improve existing features<br>
+• Collaborate with the development team<br>
+• Participate in project discussions
+</p>
+
+</div>
+
+
+<div class="description">
+
+<h3>Required Skills</h3>
+
+<div class="skills">
+
+<span class="skill">HTML</span>
+<span class="skill">CSS</span>
+<span class="skill">JavaScript</span>
+<span class="skill">Git</span>
+<span class="skill">Communication</span>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     APPLICATION FORM
+========================= -->
+
+<div class="card" id="apply">
+
+<h2>📝 Internship Application</h2>
+
+
+<div
+class="success"
+id="successMessage">
+
+<strong>🎉 Application Submitted Successfully!</strong>
+
+<br>
+
+Thank you for applying.
+
+Your application has been received by the company.
+
+</div>
+
+
+<form id="applicationForm">
+
+
+<div class="form-grid">
+
+
+<!-- NAME -->
+
+<div class="form-group">
+
+<label>
+Full Name *
+</label>
+
+<input
+type="text"
+id="name"
+placeholder="Enter your full name"
+required>
+
+</div>
+
+
+<!-- EMAIL -->
+
+<div class="form-group">
+
+<label>
+Email Address *
+</label>
+
+<input
+type="email"
+id="email"
+placeholder="you@example.com"
+required>
+
+</div>
+
+
+<!-- PHONE -->
+
+<div class="form-group">
+
+<label>
+Phone Number *
+</label>
+
+<input
+type="tel"
+id="phone"
+placeholder="+91 9876543210"
+required>
+
+</div>
+
+
+<!-- COLLEGE -->
+
+<div class="form-group">
+
+<label>
+College / University *
+</label>
+
+<input
+type="text"
+id="college"
+placeholder="Enter your college name"
+required>
+
+</div>
+
+
+<!-- DEGREE -->
+
+<div class="form-group">
+
+<label>
+Degree *
+</label>
+
+<select id="degree" required>
+
+<option value="">
+Select Degree
+</option>
+
+<option>B.Tech</option>
+<option>B.E</option>
+<option>B.Sc</option>
+<option>BCA</option>
+<option>MCA</option>
+<option>M.Tech</option>
+<option>MBA</option>
+<option>Other</option>
+
+</select>
+
+</div>
+
+
+<!-- GRADUATION -->
+
+<div class="form-group">
+
+<label>
+Graduation Year *
+</label>
+
+<select id="graduation" required>
+
+<option value="">
+Select Year
+</option>
+
+<option>2026</option>
+<option>2027</option>
+<option>2028</option>
+<option>2029</option>
+<option>2030</option>
+
+</select>
+
+</div>
+
+
+<!-- LOCATION -->
+
+<div class="form-group">
+
+<label>
+Current Location *
+</label>
+
+<input
+type="text"
+id="location"
+placeholder="City, State"
+required>
+
+</div>
+
+
+<!-- PORTFOLIO -->
+
+<div class="form-group">
+
+<label>
+Portfolio / GitHub URL
+</label>
+
+<input
+type="url"
+id="portfolio"
+placeholder="https://github.com/username">
+
+</div>
+
+
+<!-- RESUME -->
+
+<div class="form-group full">
+
+<label>
+Upload Resume *
+</label>
+
+<input
+type="file"
+id="resume"
+accept=".pdf,.doc,.docx"
+required>
+
+</div>
+
+
+<!-- COVER LETTER -->
+
+<div class="form-group full">
+
+<label>
+Cover Letter *
+</label>
+
+<textarea
+id="coverLetter"
+placeholder="Tell us why you are interested in this internship..."
+required></textarea>
+
+</div>
+
+
+</div>
+
+
+<!-- AGREEMENT -->
+
+<div class="checkbox">
+
+<input
+type="checkbox"
+id="agreement"
+required>
+
+<label for="agreement">
+
+I confirm that the information provided is accurate.
+
+</label>
+
+</div>
+
+
+<button
+type="submit"
+class="apply-btn">
+
+🚀 Submit Application
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+InternApply © 2026
+
+<br>
+
+Online Internship Application Portal
+
+</footer>
+
+
+<script>
+
+/* ==================================
+   FORM SUBMISSION
+================================== */
+
+const form =
+document.getElementById("applicationForm");
+
+
+form.addEventListener(
+"submit",
+function(event) {
+
+event.preventDefault();
+
+
+/* Get values */
+
+const name =
+document.getElementById("name").value;
+
+const email =
+document.getElementById("email").value;
+
+const phone =
+document.getElementById("phone").value;
+
+const college =
+document.getElementById("college").value;
+
+const resume =
+document.getElementById("resume").files[0];
+
+
+/* Basic validation */
+
+if(
+name.trim() === "" ||
+email.trim() === "" ||
+phone.trim() === "" ||
+college.trim() === "" ||
+!resume
+) {
+
+alert(
+"Please complete all required fields."
+);
+
+return;
+
+}
+
+
+/* Check resume size */
+
+if(
+resume.size > 5 * 1024 * 1024
+) {
+
+alert(
+"Resume must be smaller than 5 MB."
+);
+
+return;
+
+}
+
+
+/* Show success */
+
+document.getElementById(
+"successMessage"
+).style.display = "block";
+
+
+/* Save application information
+   locally for demonstration */
+
+const application = {
+
+name:
+name,
+
+email:
+email,
+
+phone:
+phone,
+
+college:
+college,
+
+degree:
+document.getElementById("degree").value,
+
+graduation:
+document.getElementById("graduation").value,
+
+location:
+document.getElementById("location").value,
+
+portfolio:
+document.getElementById("portfolio").value,
+
+coverLetter:
+document.getElementById("coverLetter").value,
+
+internship:
+"Web Development Intern",
+
+company:
+"TechNova Solutions",
+
+applicationDate:
+new Date().toLocaleDateString()
+
+};
+
+
+localStorage.setItem(
+"internshipApplication",
+JSON.stringify(application)
+);
+
+
+/* Reset form */
+
+form.reset();
+
+
+/* Scroll to success message */
+
+document.getElementById(
+"successMessage"
+).scrollIntoView({
+behavior: "smooth"
+});
+
+});
+
+
+/* ==================================
+   EMAIL VALIDATION
+================================== */
+
+document
+.getElementById("email")
+.addEventListener(
+"blur",
+function() {
+
+const email =
+this.value;
+
+const pattern =
+^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$;
+
+if(
+email &&
+!pattern.test(email)
+) {
+
+this.setCustomValidity(
+"Please enter a valid email address."
+);
+
+} else {
+
+this.setCustomValidity("");
+
+}
+
+});
+
+
+</script>
+
+</body>
+</html>
