@@ -1,0 +1,2545 @@
+ <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Currency Converter</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.converter {
+  width: 380px;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,.25);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  margin: 12px 0 6px;
+  color: #555;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #667eea;
+}
+
+button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 10px;
+  background: #667eea;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #5568d8;
+}
+
+#result {
+  margin-top: 22px;
+  padding: 15px;
+  text-align: center;
+  background: #f3f4ff;
+  border-radius: 10px;
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#rate {
+  margin-top: 8px;
+  text-align: center;
+  color: #777;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="converter">
+  <h1>💱 Currency Converter</h1>
+
+  <label>Amount</label>
+  <input type="number" id="amount" value="1" min="0">
+
+  <label>From</label>
+  <select id="from">
+    <option value="USD">🇺🇸 USD - US Dollar</option>
+    <option value="INR">🇮🇳 INR - Indian Rupee</option>
+    <option value="EUR">🇪🇺 EUR - Euro</option>
+    <option value="GBP">🇬🇧 GBP - British Pound</option>
+    <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
+    <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
+    <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
+  </select>
+
+  <label>To</label>
+  <select id="to">
+    <option value="INR">🇮🇳 INR - Indian Rupee</option>
+    <option value="USD">🇺🇸 USD - US Dollar</option>
+    <option value="EUR">🇪🇺 EUR - Euro</option>
+    <option value="GBP">🇬🇧 GBP - British Pound</option>
+    <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
+    <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
+    <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
+  </select>
+
+  <button onclick="convertCurrency()">Convert</button>
+
+  <div id="result">Enter an amount and click Convert</div>
+  <div id="rate"></div>
+</div>
+
+<script>
+async function convertCurrency() {
+  const amount = Number(document.getElementById("amount").value);
+  const from = document.getElementById("from").value;
+  const to = document.getElementById("to").value;
+
+  if (amount <= 0) {
+    document.getElementById("result").innerText =
+      "Please enter a valid amount.";
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.frankfurter.app/latest?amount=${amount}&from=${from}&to=${to}`
+    );
+
+    const data = await response.json();
+    const converted = data.rates[to];
+
+    document.getElementById("result").innerText =
+      `${amount} ${from} = ${converted.toFixed(2)} ${to}`;
+
+    document.getElementById("rate").innerText =
+      `Live exchange rate • Updated: ${data.date}`;
+
+  } catch (error) {
+    document.getElementById("result").innerText =
+      "Unable to fetch exchange rate.";
+  }
+}
+</script>
+
+</body>
+</html> 
+
+
+
+
+
+
+ -->
+
+
+ <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InternTrack</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #f4f6fb;
+  color: #222;
+}
+
+header {
+  background: #4f46e5;
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  font-size: 25px;
+}
+
+header span {
+  font-size: 15px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.card {
+  background: white;
+  padding: 22px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.08);
+}
+
+.card h3 {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 28px;
+  font-weight: bold;
+  color: #4f46e5;
+}
+
+.section {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.08);
+}
+
+.section h2 {
+  margin-bottom: 20px;
+}
+
+.intern {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr 1fr;
+  gap: 15px;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+}
+
+.intern:last-child {
+  border-bottom: none;
+}
+
+.progress {
+  background: #e5e7eb;
+  height: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #4f46e5;
+  border-radius: 10px;
+}
+
+.status {
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: #dcfce7;
+  color: #15803d;
+  text-align: center;
+  font-size: 13px;
+}
+
+.tasks {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.tasks input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+button {
+  padding: 12px 18px;
+  border: none;
+  background: #4f46e5;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #3730a3;
+}
+
+li {
+  list-style: none;
+  padding: 12px;
+  background: #f8f8ff;
+  margin: 8px 0;
+  border-radius: 8px;
+}
+
+@media(max-width: 800px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .intern {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+@media(max-width: 500px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  header {
+    padding: 18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>📊 InternTrack</h1>
+  <span>Internship Management Dashboard</span>
+</header>
+
+<div class="container">
+
+   Dashboard Cards -->
+  <!-- <div class="cards">
+    <div class="card">
+      <h3>Total Interns</h3>
+      <p id="totalInterns">24</p>
+    </div>
+
+    <div class="card">
+      <h3>Active Interns</h3>
+      <p>18</p>
+    </div>
+
+    <div class="card">
+      <h3>Completed</h3>
+      <p>6</p>
+    </div>
+
+    <div class="card">
+      <h3>Avg. Progress</h3>
+      <p>72%</p>
+    </div>
+  </div>
+
+  <!-- Intern Tracking -->
+  <div class="section">
+    <h2>👨‍💻 Intern Progress</h2>
+
+    <div class="intern">
+      <strong>Arun Kumar</strong>
+      <span>Web Development</span>
+
+      <div>
+        <div class="progress">
+          <div class="progress-bar" style="width:85%"></div>
+        </div>
+        <small>85% Complete</small>
+      </div>
+
+      <span class="status">Active</span>
+    </div>
+
+    <div class="intern">
+      <strong>Priya Sharma</strong>
+      <span>UI/UX Design</span>
+
+      <div>
+        <div class="progress">
+          <div class="progress-bar" style="width:70%"></div>
+        </div>
+        <small>70% Complete</small>
+      </div>
+
+      <span class="status">Active</span>
+    </div>
+
+    <div class="intern">
+      <strong>Rahul Singh</strong>
+      <span>Data Analytics</span>
+
+      <div>
+        <div class="progress">
+          <div class="progress-bar" style="width:60%"></div>
+        </div>
+        <small>60% Complete</small>
+      </div>
+
+      <span class="status">Active</span>
+    </div>
+
+    <div class="intern">
+      <strong>Sneha Reddy</strong>
+      <span>Marketing</span>
+
+      <div>
+        <div class="progress">
+          <div class="progress-bar" style="width:100%"></div>
+        </div>
+        <small>100% Complete</small>
+      </div>
+
+      <span class="status">Completed</span>
+    </div>
+  </div>
+
+  <!-- Task Manager -->
+  <div class="section">
+    <h2>✅ Internship Tasks</h2>
+
+    <div class="tasks">
+      <input
+        type="text"
+        id="taskInput"
+        placeholder="Enter a new internship task..."
+      >
+      <button onclick="addTask()">Add Task</button>
+    </div>
+
+    <ul id="taskList">
+      <li>Complete HTML & CSS project</li>
+      <li>Submit weekly internship report</li>
+      <li>Attend mentor meeting</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+function addTask() {
+  const input = document.getElementById("taskInput");
+  const task = input.value.trim();
+
+  if (task === "") {
+    alert("Please enter a task!");
+    return;
+  }
+
+  const li = document.createElement("li");
+  li.innerHTML = "📌 " + task;
+
+  document.getElementById("taskList").appendChild(li);
+
+  input.value = "";
+}
+</script>
+
+</body>
+</html> 
+
+ -->
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InternTrack - Internship Tracker</title>
+
+<style>
+/* ==============================
+   RESET & GLOBAL
+================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fb;
+    color: #1f2937;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+.container {
+    width: 92%;
+    max-width: 1250px;
+    margin: auto;
+}
+
+
+/* ==============================
+   HEADER
+================================ */
+
+header {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: white;
+    padding: 22px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,.15);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.header-text {
+    font-size: 14px;
+    opacity: .9;
+}
+
+
+/* ==============================
+   NAVIGATION
+================================ */
+
+nav {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,.06);
+}
+
+.nav-content {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-btn {
+    border: none;
+    background: transparent;
+    padding: 16px 20px;
+    cursor: pointer;
+    color: #4b5563;
+    font-weight: bold;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+    color: #4f46e5;
+    border-bottom-color: #4f46e5;
+}
+
+
+/* ==============================
+   PAGE SECTIONS
+================================ */
+
+.page {
+    display: none;
+    padding: 30px 0;
+}
+
+.page.active {
+    display: block;
+}
+
+.page-title {
+    margin-bottom: 22px;
+}
+
+.page-title h2 {
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+
+.page-title p {
+    color: #6b7280;
+}
+
+
+/* ==============================
+   DASHBOARD
+================================ */
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.07);
+    border-left: 5px solid #4f46e5;
+}
+
+.dashboard-card h3 {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.dashboard-card p {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+
+/* ==============================
+   FORM
+================================ */
+
+.form-section {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.07);
+}
+
+.form-section h2 {
+    margin-bottom: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 17px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.form-group input,
+.form-group select {
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #4f46e5;
+}
+
+.full {
+    grid-column: 1 / -1;
+}
+
+.primary-btn {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.primary-btn:hover {
+    background: #3730a3;
+}
+
+.secondary-btn {
+    background: #e5e7eb;
+    color: #374151;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: 8px;
+    display: none;
+}
+
+
+/* ==============================
+   SEARCH BAR
+================================ */
+
+.search-box {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    margin-bottom: 22px;
+    display: flex;
+    gap: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.05);
+}
+
+.search-box input,
+.search-box select {
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+}
+
+.search-box input {
+    flex: 1;
+}
+
+
+/* ==============================
+   INTERNSHIP CARDS
+================================ */
+
+.internship-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.internship-card {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.07);
+    transition: .2s;
+}
+
+.internship-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0,0,0,.1);
+}
+
+.company {
+    font-size: 18px;
+    font-weight: bold;
+    color: #111827;
+}
+
+.role {
+    margin-top: 7px;
+    color: #4f46e5;
+    font-weight: bold;
+}
+
+.info {
+    margin-top: 14px;
+    line-height: 1.9;
+    color: #4b5563;
+    font-size: 14px;
+}
+
+.card-actions {
+    margin-top: 18px;
+    display: flex;
+    gap: 8px;
+}
+
+.apply-btn {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    background: #10b981;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.save-btn {
+    flex: 1;
+    border: none;
+    background: #4f46e5;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.deadline {
+    color: #dc2626;
+    font-weight: bold;
+}
+
+
+/* ==============================
+   APPLICATION TABLE
+================================ */
+
+.table-wrapper {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.07);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    min-width: 1100px;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 13px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 13px;
+}
+
+th {
+    background: #f3f4f6;
+}
+
+tr:hover {
+    background: #fafafa;
+}
+
+
+/* ==============================
+   STATUS
+================================ */
+
+.status {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.status-Applied {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.status-Interview {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-Selected {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-Rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.status-Pending {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+
+/* ==============================
+   TABLE BUTTONS
+================================ */
+
+.edit-btn {
+    background: #f59e0b;
+    color: white;
+    border: none;
+    padding: 7px 9px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 7px 9px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 4px;
+}
+
+.view-btn {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 7px 9px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+/* ==============================
+   DASHBOARD EXTRA
+================================ */
+
+.dashboard-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.panel {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.07);
+}
+
+.panel h3 {
+    margin-bottom: 15px;
+}
+
+.upcoming {
+    padding: 12px;
+    background: #f9fafb;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.upcoming strong {
+    color: #4f46e5;
+}
+
+
+/* ==============================
+   EMPTY STATE
+================================ */
+
+.empty {
+    text-align: center;
+    padding: 40px;
+    color: #6b7280;
+}
+
+
+/* ==============================
+   FOOTER
+================================ */
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #6b7280;
+}
+
+
+/* ==============================
+   RESPONSIVE
+================================ */
+
+@media(max-width: 1000px) {
+
+    .dashboard {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .internship-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 650px) {
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .internship-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .nav-content {
+        overflow-x: auto;
+    }
+
+    .nav-btn {
+        white-space: nowrap;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<header>
+
+<div class="container header-content">
+
+<div class="logo">
+    💼 InternTrack
+</div>
+
+<div class="header-text">
+    Find • Track • Apply • Get Hired
+</div>
+
+</div>
+
+</header>
+
+
+<!-- =========================================
+     NAVIGATION
+========================================= -->
+
+<nav>
+
+<div class="container nav-content">
+
+<button class="nav-btn active"
+onclick="showPage('dashboard', this)">
+📊 Dashboard
+</button>
+
+<button class="nav-btn"
+onclick="showPage('available', this)">
+🔎 Available Internships
+</button>
+
+<button class="nav-btn"
+onclick="showPage('applications', this)">
+📋 My Applications
+</button>
+
+<button class="nav-btn"
+onclick="showPage('add', this)">
+➕ Add Internship
+</button>
+
+</div>
+
+</nav>
+
+
+<div class="container">
+
+
+<!-- =========================================
+     DASHBOARD
+========================================= -->
+
+<section id="dashboard" class="page active">
+
+<div class="page-title">
+
+<h2>📊 Dashboard</h2>
+
+<p>
+Track your internship applications and upcoming interviews.
+</p>
+
+</div>
+
+
+<div class="dashboard">
+
+<div class="dashboard-card">
+
+<h3>Total Applications</h3>
+
+<p id="totalApplications">0</p>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<h3>Interviews</h3>
+
+<p id="totalInterviews">0</p>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<h3>Selected Internships</h3>
+
+<p id="totalSelected">0</p>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<h3>Rejected Applications</h3>
+
+<p id="totalRejected">0</p>
+
+</div>
+
+</div>
+
+
+<div class="dashboard-section">
+
+<div class="panel">
+
+<h3>📈 Application Summary</h3>
+
+<p>
+Keep track of every internship you apply for.
+Use the Available Internships section to discover opportunities,
+then save them to My Applications.
+</p>
+
+<br>
+
+<p>
+<strong>Application success rate:</strong>
+<span id="successRate">0%</span>
+</p>
+
+</div>
+
+
+<div class="panel">
+
+<h3>🗓️ Upcoming Interviews</h3>
+
+<div id="upcomingInterviews">
+No upcoming interviews.
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     AVAILABLE INTERNSHIPS
+========================================= -->
+
+<section id="available" class="page">
+
+<div class="page-title">
+
+<h2>🔎 Available Internships</h2>
+
+<p>
+Browse internship opportunities and add them to your application tracker.
+</p>
+
+</div>
+
+
+<div class="search-box">
+
+<input
+type="text"
+id="internshipSearch"
+placeholder="🔍 Search role, company or location..."
+onkeyup="displayAvailableInternships()"
+>
+
+
+<select
+id="locationFilter"
+onchange="displayAvailableInternships()">
+
+<option value="All">All Locations</option>
+
+<option value="Remote">Remote</option>
+
+<option value="Hyderabad">Hyderabad</option>
+
+<option value="Bangalore">Bangalore</option>
+
+<option value="Chennai">Chennai</option>
+
+<option value="Mumbai">Mumbai</option>
+
+</select>
+
+
+<select
+id="roleFilter"
+onchange="displayAvailableInternships()">
+
+<option value="All">All Roles</option>
+
+<option value="Web Development">Web Development</option>
+
+<option value="Software Development">Software Development</option>
+
+<option value="Data Science">Data Science</option>
+
+<option value="UI/UX">UI/UX</option>
+
+<option value="Marketing">Marketing</option>
+
+</select>
+
+</div>
+
+
+<div
+id="internshipGrid"
+class="internship-grid">
+</div>
+
+</section>
+
+
+<!-- =========================================
+     MY APPLICATIONS
+========================================= -->
+
+<section id="applications" class="page">
+
+<div class="page-title">
+
+<h2>📋 My Applications</h2>
+
+<p>
+Manage all internships you have applied for.
+</p>
+
+</div>
+
+
+<div class="search-box">
+
+<input
+type="text"
+id="applicationSearch"
+placeholder="🔍 Search company or role..."
+onkeyup="displayApplications()"
+>
+
+
+<select
+id="applicationFilter"
+onchange="displayApplications()">
+
+<option value="All">All Status</option>
+
+<option value="Applied">Applied</option>
+
+<option value="Interview">Interview</option>
+
+<option value="Selected">Selected</option>
+
+<option value="Rejected">Rejected</option>
+
+<option value="Pending">Pending</option>
+
+</select>
+
+</div>
+
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Company</th>
+
+<th>Role</th>
+
+<th>Location</th>
+
+<th>Applied</th>
+
+<th>Deadline</th>
+
+<th>Stipend</th>
+
+<th>Status</th>
+
+<th>Interview Date/Time</th>
+
+<th>Link</th>
+
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="applicationTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     ADD INTERNSHIP
+========================================= -->
+
+<section id="add" class="page">
+
+<div class="page-title">
+
+<h2 id="formTitle">➕ Add Internship</h2>
+
+<p>
+Add an internship manually to your application tracker.
+</p>
+
+</div>
+
+
+<div class="form-section">
+
+<form id="applicationForm">
+
+<div class="form-grid">
+
+
+<div class="form-group">
+
+<label>Company Name *</label>
+
+<input
+type="text"
+id="company"
+placeholder="Google"
+required>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Job / Internship Role *</label>
+
+<input
+type="text"
+id="role"
+placeholder="Web Developer Intern"
+required>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Location</label>
+
+<input
+type="text"
+id="location"
+placeholder="Hyderabad / Remote">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Application Date *</label>
+
+<input
+type="date"
+id="applicationDate"
+required>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Application Link</label>
+
+<input
+type="url"
+id="applicationLink"
+placeholder="https://example.com/apply">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Deadline</label>
+
+<input
+type="date"
+id="deadline">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Stipend</label>
+
+<input
+type="text"
+id="stipend"
+placeholder="₹25,000/month">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Application Status</label>
+
+<select id="status">
+
+<option value="Applied">Applied</option>
+
+<option value="Interview">Interview</option>
+
+<option value="Selected">Selected</option>
+
+<option value="Rejected">Rejected</option>
+
+<option value="Pending">Pending</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Interview Date & Time</label>
+
+<input
+type="datetime-local"
+id="interviewDate">
+
+</div>
+
+</div>
+
+
+<button
+class="primary-btn"
+type="submit"
+id="submitBtn">
+
+Add Internship
+
+</button>
+
+
+<button
+class="secondary-btn"
+type="button"
+id="cancelBtn"
+onclick="cancelEdit()">
+
+Cancel
+
+</button>
+
+</form>
+
+</div>
+
+</section>
+
+</div>
+
+
+<footer>
+
+InternTrack © 2026
+<br>
+Internship Application Tracking System
+
+</footer>
+
+
+<script>
+
+/* =========================================
+   SAMPLE AVAILABLE INTERNSHIPS
+
+   Replace these with your own listings or
+   connect this section to a jobs API later.
+========================================= */
+
+const availableInternships = [
+
+{
+    company: "TechNova",
+    role: "Web Development",
+    location: "Hyderabad",
+    stipend: "₹20,000/month",
+    deadline: "2026-09-05",
+    link: "https://example.com",
+    description: "Build responsive websites using HTML, CSS and JavaScript."
+},
+
+{
+    company: "CodeCraft",
+    role: "Software Development",
+    location: "Bangalore",
+    stipend: "₹30,000/month",
+    deadline: "2026-09-10",
+    link: "https://example.com",
+    description: "Work with developers to build modern software applications."
+},
+
+{
+    company: "DataVision",
+    role: "Data Science",
+    location: "Remote",
+    stipend: "₹25,000/month",
+    deadline: "2026-08-30",
+    link: "https://example.com",
+    description: "Analyze datasets and create machine learning solutions."
+},
+
+{
+    company: "DesignHub",
+    role: "UI/UX",
+    location: "Chennai",
+    stipend: "₹18,000/month",
+    deadline: "2026-09-15",
+    link: "https://example.com",
+    description: "Design user-friendly interfaces and prototypes."
+},
+
+{
+    company: "MarketPro",
+    role: "Marketing",
+    location: "Mumbai",
+    stipend: "₹15,000/month",
+    deadline: "2026-09-20",
+    link: "https://example.com",
+    description: "Assist the marketing team with digital campaigns."
+},
+
+{
+    company: "FutureSoft",
+    role: "Software Development",
+    location: "Remote",
+    stipend: "₹35,000/month",
+    deadline: "2026-09-12",
+    link: "https://example.com",
+    description: "Develop and test web-based software products."
+}
+
+];
+
+
+/* =========================================
+   APPLICATION STORAGE
+========================================= */
+
+let applications =
+JSON.parse(
+localStorage.getItem("internApplications")
+) || [];
+
+
+let editIndex = -1;
+
+
+/* =========================================
+   PAGE NAVIGATION
+========================================= */
+
+function showPage(pageId, button) {
+
+document.querySelectorAll(".page")
+.forEach(page => {
+    page.classList.remove("active");
+});
+
+
+document.getElementById(pageId)
+.classList.add("active");
+
+
+document.querySelectorAll(".nav-btn")
+.forEach(btn => {
+    btn.classList.remove("active");
+});
+
+
+button.classList.add("active");
+
+
+if(pageId === "dashboard") {
+
+updateDashboard();
+
+}
+
+}
+
+
+/* =========================================
+   DISPLAY AVAILABLE INTERNSHIPS
+========================================= */
+
+function displayAvailableInternships() {
+
+const grid =
+document.getElementById("internshipGrid");
+
+grid.innerHTML = "";
+
+
+const search =
+document.getElementById("internshipSearch")
+.value
+.toLowerCase();
+
+
+const location =
+document.getElementById("locationFilter")
+.value;
+
+
+const role =
+document.getElementById("roleFilter")
+.value;
+
+
+const filtered =
+availableInternships.filter(internship => {
+
+const matchesSearch =
+
+internship.company
+.toLowerCase()
+.includes(search)
+
+||
+
+internship.role
+.toLowerCase()
+.includes(search)
+
+||
+
+internship.location
+.toLowerCase()
+.includes(search);
+
+
+const matchesLocation =
+
+location === "All" ||
+internship.location === location;
+
+
+const matchesRole =
+
+role === "All" ||
+internship.role === role;
+
+
+return (
+matchesSearch &&
+matchesLocation &&
+matchesRole
+);
+
+});
+
+
+if(filtered.length === 0) {
+
+grid.innerHTML = `
+<div class="empty">
+No internships found.
+</div>
+`;
+
+return;
+
+}
+
+
+filtered.forEach((internship, index) => {
+
+const card =
+document.createElement("div");
+
+card.className =
+"internship-card";
+
+
+card.innerHTML = `
+
+<div class="company">
+🏢 ${escapeHTML(internship.company)}
+</div>
+
+<div class="role">
+💼 ${escapeHTML(internship.role)}
+</div>
+
+<div class="info">
+
+📍 ${escapeHTML(internship.location)}
+<br>
+
+💰 ${escapeHTML(internship.stipend)}
+<br>
+
+📅 Deadline:
+<span class="deadline">
+${formatDate(internship.deadline)}
+</span>
+
+<br>
+
+📝 ${escapeHTML(internship.description)}
+
+</div>
+
+<div class="card-actions">
+
+<a
+class="apply-btn"
+href="${internship.link}"
+target="_blank">
+
+Apply ↗
+
+</a>
+
+<button
+class="save-btn"
+onclick="saveInternship(${availableInternships.indexOf(internship)})">
+
++ Track
+
+</button>
+
+</div>
+
+`;
+
+
+grid.appendChild(card);
+
+});
+
+}
+
+
+/* =========================================
+   SAVE AVAILABLE INTERNSHIP
+   TO MY APPLICATIONS
+========================================= */
+
+function saveInternship(index) {
+
+const internship =
+availableInternships[index];
+
+
+const exists =
+applications.some(app =>
+
+app.company === internship.company &&
+app.role === internship.role
+
+);
+
+
+if(exists) {
+
+alert(
+"This internship is already in My Applications."
+);
+
+return;
+
+}
+
+
+const today =
+new Date()
+.toISOString()
+.split("T")[0];
+
+
+applications.push({
+
+company: internship.company,
+
+role: internship.role,
+
+location: internship.location,
+
+applicationDate: today,
+
+applicationLink: internship.link,
+
+deadline: internship.deadline,
+
+stipend: internship.stipend,
+
+status: "Pending",
+
+interviewDate: ""
+
+});
+
+
+saveData();
+
+updateDashboard();
+
+displayApplications();
+
+
+alert(
+"Internship added to My Applications!"
+);
+
+}
+
+
+/* =========================================
+   DISPLAY APPLICATIONS
+========================================= */
+
+function displayApplications() {
+
+const table =
+document.getElementById(
+"applicationTable"
+);
+
+table.innerHTML = "";
+
+
+const search =
+document.getElementById(
+"applicationSearch"
+)
+.value
+.toLowerCase();
+
+
+const filter =
+document.getElementById(
+"applicationFilter"
+)
+.value;
+
+
+const filtered =
+applications.filter(app => {
+
+const searchMatch =
+
+app.company
+.toLowerCase()
+.includes(search)
+
+||
+
+app.role
+.toLowerCase()
+.includes(search);
+
+
+const statusMatch =
+
+filter === "All" ||
+app.status === filter;
+
+
+return (
+searchMatch &&
+statusMatch
+);
+
+});
+
+
+if(filtered.length === 0) {
+
+table.innerHTML = `
+
+<tr>
+
+<td
+colspan="10"
+class="empty">
+
+No applications found.
+
+</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+
+filtered.forEach(app => {
+
+const index =
+applications.indexOf(app);
+
+
+const row =
+document.createElement("tr");
+
+
+let interview = "—";
+
+
+if(app.interviewDate) {
+
+interview =
+new Date(
+app.interviewDate
+).toLocaleString();
+
+}
+
+
+let link = "—";
+
+
+if(app.applicationLink) {
+
+link = `
+
+<a
+href="${app.applicationLink}"
+target="_blank">
+
+<button class="view-btn">
+View
+</button>
+
+</a>
+
+`;
+
+}
+
+
+row.innerHTML = `
+
+<td>
+<strong>
+${escapeHTML(app.company)}
+</strong>
+</td>
+
+<td>
+${escapeHTML(app.role)}
+</td>
+
+<td>
+${escapeHTML(app.location || "—")}
+</td>
+
+<td>
+${formatDate(app.applicationDate)}
+</td>
+
+<td>
+${formatDate(app.deadline)}
+</td>
+
+<td>
+${escapeHTML(app.stipend || "—")}
+</td>
+
+<td>
+
+<span
+class="status status-${app.status}">
+
+${app.status}
+
+</span>
+
+</td>
+
+<td>
+${interview}
+</td>
+
+<td>
+${link}
+</td>
+
+<td>
+
+<button
+class="edit-btn"
+onclick="editApplication(${index})">
+
+Edit
+
+</button>
+
+<button
+class="delete-btn"
+onclick="deleteApplication(${index})">
+
+Delete
+
+</button>
+
+</td>
+
+`;
+
+
+table.appendChild(row);
+
+});
+
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+document
+.getElementById("applicationForm")
+.addEventListener("submit", function(e) {
+
+e.preventDefault();
+
+
+const application = {
+
+company:
+document.getElementById("company").value,
+
+role:
+document.getElementById("role").value,
+
+location:
+document.getElementById("location").value,
+
+applicationDate:
+document.getElementById("applicationDate").value,
+
+applicationLink:
+document.getElementById("applicationLink").value,
+
+deadline:
+document.getElementById("deadline").value,
+
+stipend:
+document.getElementById("stipend").value,
+
+status:
+document.getElementById("status").value,
+
+interviewDate:
+document.getElementById("interviewDate").value
+
+};
+
+
+if(editIndex === -1) {
+
+applications.push(application);
+
+alert(
+"Internship added successfully!"
+);
+
+} else {
+
+applications[editIndex] =
+application;
+
+editIndex = -1;
+
+document.getElementById(
+"formTitle"
+).innerText =
+"➕ Add Internship";
+
+document.getElementById(
+"submitBtn"
+).innerText =
+"Add Internship";
+
+document.getElementById(
+"cancelBtn"
+).style.display =
+"none";
+
+alert(
+"Application updated successfully!"
+);
+
+}
+
+
+saveData();
+
+this.reset();
+
+displayApplications();
+
+updateDashboard();
+
+});
+
+
+/* =========================================
+   EDIT APPLICATION
+========================================= */
+
+function editApplication(index) {
+
+const app =
+applications[index];
+
+
+editIndex = index;
+
+
+document.getElementById("company").value =
+app.company;
+
+document.getElementById("role").value =
+app.role;
+
+document.getElementById("location").value =
+app.location;
+
+document.getElementById("applicationDate").value =
+app.applicationDate;
+
+document.getElementById("applicationLink").value =
+app.applicationLink;
+
+document.getElementById("deadline").value =
+app.deadline;
+
+document.getElementById("stipend").value =
+app.stipend;
+
+document.getElementById("status").value =
+app.status;
+
+document.getElementById("interviewDate").value =
+app.interviewDate;
+
+
+document.getElementById(
+"formTitle"
+).innerText =
+"✏️ Edit Internship";
+
+
+document.getElementById(
+"submitBtn"
+).innerText =
+"Update Internship";
+
+
+document.getElementById(
+"cancelBtn"
+).style.display =
+"inline-block";
+
+
+/* Open Add page */
+
+document.querySelectorAll(".page")
+.forEach(page => {
+    page.classList.remove("active");
+});
+
+
+document.getElementById("add")
+.classList.add("active");
+
+
+document.querySelectorAll(".nav-btn")
+.forEach(btn => {
+    btn.classList.remove("active");
+});
+
+
+document.querySelectorAll(".nav-btn")[3]
+.classList.add("active");
+
+
+window.scrollTo({
+top: 0,
+behavior: "smooth"
+});
+
+}
+
+
+/* =========================================
+   CANCEL EDIT
+========================================= */
+
+function cancelEdit() {
+
+editIndex = -1;
+
+document
+.getElementById("applicationForm")
+.reset();
+
+
+document.getElementById(
+"formTitle"
+).innerText =
+"➕ Add Internship";
+
+
+document.getElementById(
+"submitBtn"
+).innerText =
+"Add Internship";
+
+
+document.getElementById(
+"cancelBtn"
+).style.display =
+"none";
+
+}
+
+
+/* =========================================
+   DELETE
+========================================= */
+
+function deleteApplication(index) {
+
+if(
+!confirm(
+"Delete this internship application?"
+)
+) {
+return;
+}
+
+
+applications.splice(index, 1);
+
+saveData();
+
+displayApplications();
+
+updateDashboard();
+
+}
+
+
+/* =========================================
+   SAVE DATA
+========================================= */
+
+function saveData() {
+
+localStorage.setItem(
+"internApplications",
+JSON.stringify(applications)
+);
+
+}
+
+
+/* =========================================
+   DASHBOARD
+========================================= */
+
+function updateDashboard() {
+
+const total =
+applications.length;
+
+
+const interviews =
+applications.filter(
+app => app.status === "Interview"
+).length;
+
+
+const selected =
+applications.filter(
+app => app.status === "Selected"
+).length;
+
+
+const rejected =
+applications.filter(
+app => app.status === "Rejected"
+).length;
+
+
+document.getElementById(
+"totalApplications"
+).innerText =
+total;
+
+
+document.getElementById(
+"totalInterviews"
+).innerText =
+interviews;
+
+
+document.getElementById(
+"totalSelected"
+).innerText =
+selected;
+
+
+document.getElementById(
+"totalRejected"
+).innerText =
+rejected;
+
+
+/* Success rate */
+
+let rate = 0;
+
+if(total > 0) {
+
+rate =
+Math.round(
+(selected / total) * 100
+);
+
+}
+
+
+document.getElementById(
+"successRate"
+).innerText =
+rate + "%";
+
+
+/* Upcoming interviews */
+
+const upcoming =
+applications
+.filter(app =>
+app.interviewDate &&
+new Date(app.interviewDate) >= new Date()
+)
+.sort(
+(a,b) =>
+new Date(a.interviewDate) -
+new Date(b.interviewDate)
+)
+.slice(0, 5);
+
+
+const interviewBox =
+document.getElementById(
+"upcomingInterviews"
+);
+
+
+if(upcoming.length === 0) {
+
+interviewBox.innerHTML =
+"No upcoming interviews.";
+
+return;
+
+}
+
+
+interviewBox.innerHTML = "";
+
+
+upcoming.forEach(app => {
+
+const div =
+document.createElement("div");
+
+div.className =
+"upcoming";
+
+
+div.innerHTML = `
+
+<strong>
+${escapeHTML(app.company)}
+</strong>
+
+<br>
+
+${escapeHTML(app.role)}
+
+<br>
+
+🗓️
+${new Date(
+app.interviewDate
+).toLocaleString()}
+
+`;
+
+interviewBox.appendChild(div);
+
+});
+
+}
+
+
+/* =========================================
+   DATE FORMATTER
+========================================= */
+
+function formatDate(date) {
+
+if(!date) {
+return "—";
+}
+
+
+return new Date(date)
+.toLocaleDateString();
+
+}
+
+
+/* =========================================
+   BASIC HTML ESCAPE
+========================================= */
+
+function escapeHTML(value) {
+
+if(!value) {
+return "";
+}
+
+
+return String(value)
+
+.replace(/&/g, "&amp;")
+
+.replace(/</g, "&lt;")
+
+.replace(/>/g, "&gt;")
+
+.replace(/"/g, "&quot;")
+
+.replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================================
+   INITIALIZE
+========================================= */
+
+displayAvailableInternships();
+
+displayApplications();
+
+updateDashboard();
+
+</script>
+
+</body>
+</html>
